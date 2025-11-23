@@ -45,7 +45,11 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    return [token.strip(".,!?;:'\"()[]{}").lower() for token in string.split()]
+    return [
+        "".join(ch for ch in token if ch.isalpha()).lower()
+        for token in string.split()
+        if "".join(ch for ch in token if ch.isalpha())
+    ]
 
 
 # -----------------------------------------------
