@@ -44,13 +44,12 @@ print(tokens)
 
 # Your code here:
 # -----------------------------------------------
-def tokenize(string: str) -> list:
-    return [
-        cleaned
-        for token in string.split()
-        if (cleaned := "".join(ch for ch in token if ch.isalpha()).lower())
-    ]
+def tokenize(string: str, unique=False) -> list:
+    nonpunct = "\n\tabcdefghijklmnopqrstuvwxyz1234567890 "
+    tokens_1 = ''.join([i for i in string.lower() if i in nonpunct]).split()
+    unique_tokens = np.unique(tokens_1).tolist()
 
+    return unique_tokens if unique else tokens_1
 
 # -----------------------------------------------
 
@@ -93,13 +92,11 @@ print(word_frequencies)
 
 # Your code here:
 # -----------------------------------------------
+
 def token_counts(string: str, k: int = 1) -> dict:
-    tokens = [
-        cleaned
-        for token in string.split()
-        if (cleaned := "".join(ch for ch in token if ch.isalpha()).lower())
-    ]
-    return {t: tokens.count(t) for t in set(tokens) if tokens.count(t) > k}
+    tokens = tokenize(string, unique=False)
+    word_frequencies = {word: tokens.count(word) for word in tokens if tokens.count(word) >= k}
+    return word_frequencies
 
 # test:
 text_hist = {'the': 2, 'quick': 1, 'brown': 1, 'fox': 1, 'jumps': 1, 'over': 1, 'lazy': 1, 'dog': 1}
