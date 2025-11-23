@@ -127,7 +127,7 @@ all(text_hist[key] == value for key, value in token_counts(text).items())
 
 # Your code here:
 # -----------------------------------------------
-token_to_id = _ # Your code here
+token_to_id = {token: tokens.index(token) for token in tokens}
 
 # Expected output: {'dog': 0, 'quick': 1, 'fox': 2, 'the': 3, 'over': 4, 'lazy': 5, 'brown': 6, 'jumps': 7}
 print(token_to_id)
@@ -139,7 +139,7 @@ print(token_to_id)
 #
 # Your code here:
 # -----------------------------------------------
-id_to_token = _ # Your code here
+id_to_token = {tokens.index(token): token for token in tokens}
 
 # tests: 
 # test 1
@@ -160,8 +160,11 @@ assert all(id_to_token[token_to_id[key]]==key for key in token_to_id) and all(to
 # Your code here:
 # -----------------------------------------------
 def make_vocabulary_map(documents: list) -> tuple:
-    # Hint: use your tokenize function
-    pass # Your code
+    tokenized_docs = list(map(tokenize, documents))
+    tokens = np.unique(np.concatenate(tokenized_docs)).tolist()
+    token2int = {token: tokens.index(token) for token in tokens}
+    int2token = {tokens.index(token): token for token in tokens}
+    return token2int, int2token
 
 # Test
 t2i, i2t = make_vocabulary_map([text])
@@ -180,8 +183,11 @@ all(i2t[t2i[tok]] == tok for tok in t2i) # should be True
 # Your code here:
 # -----------------------------------------------
 def tokenize_and_encode(documents: list) -> list:
-    # Hint: use your make_vocabulary_map and tokenize function
-    pass # Your code
+    tokenized_docs = [tokenize(docs, unique = False) for doc in documents]
+    token_to_id, id_to_token = make_vocabulary_map(documents)
+    encoded_list = [[token_to_id[token] for token in sub_list] for sub_list in tokenized_docs]
+    return encoded_list, token_to_id, id_to_token
+    
 
 # Test:
 enc, t2i, i2t = tokenize_and_encode([text, 'What a luck we had today!'])
@@ -207,7 +213,7 @@ enc, t2i, i2t = tokenize_and_encode([text, 'What a luck we had today!'])
 
 # Your code here:
 # -----------------------------------------------
-sigmoid = _ # Your code
+sigmoid = lambda x: 1 / (1 + np.exp(-x))
 
 # Test:
 np.all(sigmoid(np.log([1, 1/3, 1/7])) == np.array([1/2, 1/4, 1/8]))
