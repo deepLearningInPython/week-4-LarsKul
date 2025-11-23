@@ -46,9 +46,9 @@ print(tokens)
 # -----------------------------------------------
 def tokenize(string: str) -> list:
     return [
-        "".join(ch for ch in token if ch.isalpha()).lower()
+        cleaned
         for token in string.split()
-        if "".join(ch for ch in token if ch.isalpha())
+        if (cleaned := "".join(ch for ch in token if ch.isalpha()).lower())
     ]
 
 
@@ -78,7 +78,7 @@ def tokenize(string: str) -> list:
 
 # Your code here:
 # -----------------------------------------------
-word_frequencies = _ # Your code here
+word_frequencies = {token: tokens.count(token) for token in tokens}
 
 # Expected output example: {'the': 2, 'quick': 1, ...}
 print(word_frequencies)
@@ -94,7 +94,12 @@ print(word_frequencies)
 # Your code here:
 # -----------------------------------------------
 def token_counts(string: str, k: int = 1) -> dict:
-    pass # Your code
+    tokens = [
+        cleaned
+        for token in string.split()
+        if (cleaned := "".join(ch for ch in token if ch.isalpha()).lower())
+    ]
+    return {t: tokens.count(t) for t in set(tokens) if tokens.count(t) > k}
 
 # test:
 text_hist = {'the': 2, 'quick': 1, 'brown': 1, 'fox': 1, 'jumps': 1, 'over': 1, 'lazy': 1, 'dog': 1}
