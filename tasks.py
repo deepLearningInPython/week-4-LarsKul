@@ -48,7 +48,7 @@ def tokenize(string: str, unique=False) -> list:
     nonpunct = "\n\tabcdefghijklmnopqrstuvwxyz1234567890 "
     tokens_1 = ''.join([i for i in string.lower() if i in nonpunct]).split()
     unique_tokens = np.unique(tokens_1).tolist()
-
+    
     return unique_tokens if unique else tokens_1
 
 # -----------------------------------------------
